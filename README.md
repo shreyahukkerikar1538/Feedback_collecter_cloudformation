@@ -28,3 +28,26 @@ Leave everything as default
 4 .Copy the IP address shown
 
 ### Attached Screenshoots for the above steps.
+
+
+###  Adding S3 + IAM Role to Your Existing Template and Update the Stack
+
+## Step 1: Open Your Existing CloudFormation Template
+   1. Opening the file feedback-app.yml
+   2. Add the S3 Bucket + IAM Role + Instance Profile in yaml code
+      
+## Step 2: Modify the EC2 Resource to Attach IAM Role
+  1. In existing WebAppInstance: resource, adding this line: "IamInstanceProfile: !Ref EC2InstanceProfile"
+
+## Step 3:  Updating Your CloudFormation Stack
+  1. AWS Console → CloudFormation(FeedbackCollectorApp)
+  2. Click Update
+  3. Choose “Replace current template”, and upload the new feedback-app.yml file
+  4. Click Next → Next → Review → Click “Update stack”
+
+### Screenshot attached updating stack 
+
+
+
+
+
