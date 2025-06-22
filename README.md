@@ -66,6 +66,23 @@ Leave everything as default
  5. Create HTML feedback form -
     sudo nano /var/www/html/index.html
     I have attached the HTML file Paste the file then press Ctrl + X-enter-yes- enter.
+### Step 3: Install composer
+ 1. Run these commands one by one from your EC2 terminal:
+    cd ~
+    curl -sS https://getcomposer.org/installer | php
+    sudo mv composer.phar /usr/local/bin/composer
+    composer --version
+### Step 4: Install AWS SDK for PHP
+ 1. cd /var/www/html
+    composer require aws/aws-sdk-php
+
+### Step 5: Write the full version PHP code and check the results in the browser
+  1. PHP file is attached
+     sudo nano /var/www/html/submit.php (paste the code ctrl + X - Y - enter
+  2. Test in the Browser: http://ec2-13-222-37-21.compute-1.amazonaws.com
+
+
+
 
     
 
