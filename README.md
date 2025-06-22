@@ -48,6 +48,20 @@ Leave everything as default
 ### Screenshot attached updating stack 
 
 
+### Connect to EC2 instance + install PHP and Apache
+ ## Step 1: Connect to your EC2 instance via SSH
+   1. Open PowerShell.
+   2. Paste the following command exactly as it is:ssh -i "File path of your .pem" ec2-user@<your-public-ip>
+   3. Once you're connected, you’ll see a prompt like: [ec2-user@ip-... ~]$
+
+
+
+
+
+
+
+
+
 
 
 
