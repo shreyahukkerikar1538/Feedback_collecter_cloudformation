@@ -1,0 +1,73 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Deploy Feedback Collector App with EC2, PHP 7.4+, and S3
+
+Resources:
+  FeedbackBucket:
+    Type: AWS::S3::Bucket
+
+  WebAppSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Allow HTTP and SSH
+      VpcId: !Ref "AWS::NoValue"
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+
+  EC2InstanceRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: ec2.amazonaws.com
+            Action: sts:AssumeRole
+      Path: /
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AmazonS3FullAccess
+
+  EC2InstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Roles:
+        - !Ref EC2InstanceRole
+      Path: /
+
+  WebAppInstance:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: t2.micro
+      ImageId: ami-0c02fb55956c7d316  # Amazon Linux 2 (update this if outdated)
+      SecurityGroupIds:
+        - !Ref WebAppSecurityGroup
+      IamInstanceProfile: !Ref EC2InstanceProfile
+      KeyName: feedback-key  # Replace with your actual key pair name
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash
+          yum update -y
+          amazon-linux-extras enable php7.4
+          yum clean metadata
+          yum install -y php php-mbstring php-xml php-json php-common php-fpm php-cli
+          yum install -y httpd git
+          systemctl enable httpd
+          systemctl start httpd
+          cd /var/www/html
+          echo "<?php echo 'PHP is working'; ?>" > index.php
+
+Outputs:
+  WebAppURL:
+    Description: Public URL to access the web app
+    Value: !Sub "http://${WebAppInstance.PublicDnsName}"
+
+  BucketName:
+    Description: Name of the S3 bucket for feedback
+    Value: !Ref FeedbackBucket
