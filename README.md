@@ -61,7 +61,12 @@ Leave everything as default
  3. start the Apache web server and enable it on boot-
      sudo systemctl start httpd
     sudo systemctl enable httpd
- 5. Test Apache Web Server -
+ 4. Test Apache Web Server -
     echo "<?php echo 'PHP is working'; ?>" | sudo tee /var/www/html/index.php
+ 5. Create HTML feedback form -
+    sudo nano /var/www/html/index.html
+    I have attached the HTML file Paste the file then press Ctrl + X-enter-yes- enter.
+
+    
 
 
